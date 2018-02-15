@@ -6,22 +6,23 @@ import csv
 
 starting_file = ['data.csv']
 
-def read_csv(file_obj):
+#
+# Helper functions to read and write csv
+#
+
+def read_csv(input_file):
     data = []
-    with open(file_obj) as f:
-        reader = csv.reader(file_obj)
+    with open(input_file) as f:
+        reader = csv.reader(f, delimiter=',')
         for row in reader:
-            for num in row:
-                data.append(int(num))
+            data = [int(num) for num in row]
     return data
 
-def write_csv(data, file_obj):
-    with open(file_obj, 'wb') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
-        for line in data:
-            for num in line:
-                writer.writerow(num)
-    
+def write_csv(data, output_file):
+    with open(output_file, 'w') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow(data)
+
 #
 # STAGE 1 - Read in file and multiply numbers by 100
 #
@@ -30,20 +31,12 @@ def write_csv(data, file_obj):
             suffix(".csv"),
             ".csv")
 def read_multiply(input_file, output_file):
-    data = []
-
-    with open(input_file) as f:
-        reader = csv.reader(f, delimiter=',')
-        for row in reader:
-            for num in row:
-                data.append(int(num))
+    data = read_csv(input_file)
 
     transformed = [x*100 for x in data]
     print(transformed)
-    with open(output_file, 'w') as f:
-        writer = csv.writer(f, delimiter=',')   
-        for i in transformed:
-            writer.writerow(str(i))
+    
+    write_csv(transformed, output_file)
 #
 # STAGE 2 - Add 15 to the numbers
 #
@@ -54,21 +47,11 @@ def read_multiply(input_file, output_file):
 
 def add_num(input_file, output_file):
 
-    data = []
-    with open(input_file) as f:
-        reader = csv.reader(f, delimiter=',')
-        for row in reader:
-            for num in row:
-                nums = int(num)
-                data.append(nums)
+    data = read_csv(input_file)
     
     transformed = [x+15 for x in data]
     print(transformed)
 
-    with open(output_file, 'w') as f:
-        writer = csv.writer(f, delimiter=',')
-        for i in range(len(transformed)):
-            writer.writerow(str(i))
-
+    write_csv(transformed, output_file)
     
 pipeline_run()
