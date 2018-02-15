@@ -7,7 +7,7 @@ import csv
 starting_file = ['data.csv']
 
 #
-# Helper functions to read and write csv
+# Helper functions to read and write csv files
 #
 
 def read_csv(input_file):
@@ -46,7 +46,6 @@ def read_multiply(input_file, output_file):
             ".csv")
 
 def add_num(input_file, output_file):
-
     data = read_csv(input_file)
     
     transformed = [x+15 for x in data]
@@ -54,4 +53,24 @@ def add_num(input_file, output_file):
 
     write_csv(transformed, output_file)
     
+#
+# STAGE 3 - Find Mean, Min and Max
+#
+
+@transform(add_num,
+            suffix(".csv"),
+            ".csv")
+
+def find_stats(input_file, output_file):
+    data = read_csv(input_file)
+
+    mean = sum(data)/len(data)
+    minimum = min(data)
+    maximum = max(data)
+    print('The mean is {}, The min is {}, The max is {}'
+        .format(mean, minimum, maximum))
+
+    stat_data = [mean, minimum, maximum]
+    write_csv(stat_data, output_file)
+
 pipeline_run()
